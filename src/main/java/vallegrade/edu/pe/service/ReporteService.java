@@ -1,5 +1,7 @@
 package vallegrade.edu.pe.service;
 
+import com.itextpdf.text.Font;
+import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfTable;
 import vallegrade.edu.pe.model.Cliente;
 import vallegrade.edu.pe.model.ReporteDAO;
@@ -74,6 +76,46 @@ public class ReporteService {
             // Título
             PdfPCell cellTitle = new PdfPCell();
             Paragraph titulo = new Paragraph("REPORTE DE CLIENTES\n",
+                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, BaseColor.DARK_GRAY));
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            Paragraph fecha = new Paragraph("Generado: " + new java.util.Date(),
+                    FontFactory.getFont(FontFactory.HELVETICA, 11, BaseColor.GRAY));
+            fecha.setAlignment(Element.ALIGN_CENTER);
+            cellTitle.addElement(titulo);
+            cellTitle.addElement(fecha);
+            cellTitle.setBorder(Rectangle.NO_BORDER);
+            header.addCell(cellTitle);
+
+
+            doc.add(header);
+            doc.add(new Paragraph("\n"));
+
+
+            // --- TABLA DE DATOS ---
+            TableModel modelo = tabla.getModel();
+            PdfPTable pdfTabla = new PdfPTable(modelo.getColumnCount());
+            pdfTabla.setWidthPercentage(100);
+            pdfTabla.setSpacingBefore(15);
+            pdfTabla.setSpacingAfter(15);
+
+
+            // Encabezados
+            for (int i = 0; i < modelo.getColumnCount(); i++) {
+                PdfPCell celda = new PdfPCell(new Phrase(modelo.getColumnName(i),
+                        FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE)));
+                celda.setBackgroundColor(new BaseColor(52, 152, 219));
+                celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celda.setPadding(8);
+                pdfTabla.addCell(celda);
+            }
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+            for ( int j = 0; j < modelo.getColumnCount(); j++) {
+            String valor = modelo.getValueAt(i, j) ! = null ? modelo.getValueAt(i, j).toString() : "";
+            PdfCell celda = new PdfPCell(new Phrase(valor, FontFactory.getFont(FontFactory.HELVETICA, 11)));
+            celda.setHorizontalAligment
+            }
+            }
+            }
         }
-    }
-}
+
+
