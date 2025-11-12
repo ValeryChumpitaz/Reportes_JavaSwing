@@ -6,5 +6,14 @@ import javax.swing.JTable;
 
 public class ReporteController {
 
-
+    this.service = service;
+    this.view = view;
 }
+    public void generarPDF(JTable tabla){
+        service.exportarPDF(tabla);
+    }
+
+    public void generarExcel(JTable tabla){
+        service.exportarExcel(tabla);
+    }
+
