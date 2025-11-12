@@ -108,14 +108,45 @@ public class ReporteService {
                 celda.setPadding(8);
                 pdfTabla.addCell(celda);
             }
+
+
+            // Filas
             for (int i = 0; i < modelo.getRowCount(); i++) {
-            for ( int j = 0; j < modelo.getColumnCount(); j++) {
-            String valor = modelo.getValueAt(i, j) ! = null ? modelo.getValueAt(i, j).toString() : "";
-            PdfCell celda = new PdfPCell(new Phrase(valor, FontFactory.getFont(FontFactory.HELVETICA, 11)));
-            celda.setHorizontalAligment
+                for (int j = 0; j < modelo.getColumnCount(); j++) {
+                    String valor = modelo.getValueAt(i, j) != null ? modelo.getValueAt(i, j).toString() : "";
+                    PdfPCell celda = new PdfPCell(new Phrase(valor, FontFactory.getFont(FontFactory.HELVETICA, 11)));
+                    celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    celda.setPadding(6);
+                    if (i % 2 == 0)
+                        celda.setBackgroundColor(new BaseColor(245, 245, 245));
+                    pdfTabla.addCell(celda);
+                }
             }
-            }
-            }
+
+
+            doc.add(pdfTabla);
+
+
+            // --- PIE DE PÁGINA ---
+            Paragraph footer = new Paragraph(
+                    "Instituto Valle Grande © 2025  |  Generado por: Valery",
+                    FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 10, BaseColor.GRAY)
+            );
+            footer.setAlignment(Element.ALIGN_RIGHT);
+            doc.add(footer);
+
+
+            doc.close();
+            writer.close();
+
+
+            JOptionPane.showMessageDialog(null, "PDF profesional generado correctamente en la carpeta Reportes.");
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, " Error al generar PDF: " + e.getMessage());
+            e.printStackTrace();
         }
+    }
 
 
