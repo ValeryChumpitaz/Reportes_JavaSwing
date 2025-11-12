@@ -140,13 +140,50 @@ public class ReporteService {
             writer.close();
 
 
-            JOptionPane.showMessageDialog(null, "PDF profesional generado correctamente en la carpeta Reportes.");
+            JOptionPane.showMessageDialog(null, "✅ PDF profesional generado correctamente en la carpeta Reportes.");
 
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, " Error al generar PDF: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "❌ Error al generar PDF: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
 
+
+
+    public void exportarExcel(JTable tabla) {
+        String ruta = "Reportes/Reporte_Clientes.xlsx";
+        new File("Reportes").mkdirs();
+
+
+        try (Workbook wb = new XSSFWorkbook(); FileOutputStream out = new FileOutputStream(ruta)) {
+            Sheet hoja = wb.createSheet("Clientes");
+            TableModel modelo = tabla.getModel();
+
+
+            Row cab = hoja.createRow(0);
+            for (int i = 0; i < modelo.getColumnCount(); i++) {
+                Cell c = cab.createCell(i);
+                c.setCellValue(modelo.getColumnName(i));
+            }
+
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                Row fila = hoja.createRow(i + 1);
+                for (int j = 0; j < modelo.getColumnCount(); j++) {
+                    Object valor = modelo.getValueAt(i, j);
+                    fila.createCell(j).setCellValue(valor != null ? valor.toString() : "");
+                }
+            }
+
+
+            for (int i = 0; i < modelo.getColumnCount(); i++) hoja.autoSizeColumn(i);
+            wb.write(out);
+            JOptionPane.showMessageDialog(null, "Excel generado correctamente.");
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, " Error Excel: " + e.getMessage());
+        }
+   }}
